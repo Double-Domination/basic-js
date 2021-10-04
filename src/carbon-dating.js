@@ -18,27 +18,35 @@ const HALF_LIFE_PERIOD = 5730;
  *
  */
 export default function dateSample(sampleActivity) {
-  const MODERN_ACTIVITY = 15;
-  const HALF_LIFE_PERIOD = 5730;
-  const coeficent = Math.LN2 / HALF_LIFE_PERIOD;
-
-  if (typeof sampleActivity !== 'string') {
-    return false;
-  }
-
-  sampleActivityProcessed = parseFloat(sampleActivity);
-  if (isNaN(sampleActivityProcessed)) {
-    return false;
-  }
-
-  if (sampleActivity > MODERN_ACTIVITY) {
-    return false;
-  }
-  //if zero or less
-  if (sampleActivityProcessed === 0 || sampleActivityProcessed < 0) {
-    return false;
-  }
-
-  let result = Math.log(MODERN_ACTIVITY / sampleActivityProcessed) / coeficent;
-  return Math.ceil(result);
+  const k = 0.693 / HALF_LIFE_PERIOD;
+  return typeof sampleActivity !== 'string' ||
+    isNaN(sampleActivity) ||
+    sampleActivity > MODERN_ACTIVITY ||
+    sampleActivity <= 0
+    ? false
+    : Math.ceil(Math.log(MODERN_ACTIVITY / sampleActivity) / k);
 }
+
+// const MODERN_ACTIVITY = 15;
+// const HALF_LIFE_PERIOD = 5730;
+// const coeficent = Math.LN2 / HALF_LIFE_PERIOD;
+
+// if (typeof sampleActivity !== 'string') {
+//   return false;
+// }
+
+// sampleActivityProcessed = parseFloat(sampleActivity);
+// if (isNaN(sampleActivityProcessed)) {
+//   return false;
+// }
+
+// if (sampleActivity > MODERN_ACTIVITY) {
+//   return false;
+// }
+// //if zero or less
+// if (sampleActivityProcessed === 0 || sampleActivityProcessed < 0) {
+//   return false;
+// }
+
+// let result = Math.log(MODERN_ACTIVITY / sampleActivityProcessed) / coeficent;
+// return Math.ceil(result);

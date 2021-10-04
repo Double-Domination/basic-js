@@ -23,7 +23,29 @@ import { NotImplementedError } from '../extensions/index.js';
  *  [1, 1, 1]
  * ]
  */
-export default function minesweeper (/* matrix */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+export default function minesweeper(matrix) {
+  const tmp = [...matrix].map((x) =>
+    x.map((y) => (y === false ? Number(y) : y)),
+  );
+
+  for (let x = 0; x < matrix.length; x++) {
+    for (let y = 0; y < matrix[x].length; y++) {
+      if (matrix[x][y] === true) {
+        Number.isInteger(tmp[x - 1] && tmp[x - 1][y]) && tmp[x - 1][y]++;
+        Number.isInteger(tmp[x] && tmp[x][y - 1]) && tmp[x][y - 1]++;
+        Number.isInteger(tmp[x + 1] && tmp[x + 1][y]) && tmp[x + 1][y]++;
+        Number.isInteger(tmp[x] && tmp[x][y + 1]) && tmp[x][y + 1]++;
+        Number.isInteger(tmp[x - 1] && tmp[x - 1][y - 1]) &&
+          tmp[x - 1][y - 1]++;
+        Number.isInteger(tmp[x + 1] && tmp[x + 1][y + 1]) &&
+          tmp[x + 1][y + 1]++;
+        Number.isInteger(tmp[x - 1] && tmp[x - 1][y + 1]) &&
+          tmp[x - 1][y + 1]++;
+        Number.isInteger(tmp[x + 1] && tmp[x + 1][y - 1]) &&
+          tmp[x + 1][y - 1]++;
+      }
+    }
+  }
+
+  return tmp.map((x) => x.map((y) => (y === true ? 1 : y)));
 }
